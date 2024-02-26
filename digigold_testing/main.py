@@ -91,7 +91,7 @@ def sell_transactions(number_of_transactions) -> None:
         query = {'userId': user_id}
         # mongo_manager.increment_amount_withdrawn(query, amount)
         # mongo_manager.decrement_gold_volume(query, is_verified)
-
+        print("success")
         write_new_value(SELL_SAVE, sell_flow.sell_order_no)
 
 
@@ -101,13 +101,6 @@ def main():
     xyz.generate_fixed_user()
 
 
-def calculate_taxed_price(amount):
-    tax = (amount * 1.5 / 100) * 2
-    print(amount + tax)
-
-
 if __name__ == '__main__':
-    # sell_transactions(5)
-    # psql = postgres_manager.PostgresSQLManager()
-    # res = psql.get_total_gold()[0]
-    calculate_taxed_price()
+    buy_transactions(1)
+    sell_transactions(1)
