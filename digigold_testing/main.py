@@ -22,29 +22,27 @@ def buy_transactions(number_of_transactions) -> None:
     for i in range(number_of_transactions):
         is_success = buy_flow.get_buy_price()
         if not is_success:
-            print("Buy verify failed. Not going to continue")
+            print("Buy Price failed.")
             return
 
         amount = get_random_buy_price()
         user_id = mongo_manager.get_random_user()
         is_verified = buy_flow.buy_verify(amount, user_id)
         if not is_verified:
-            print("Buy verify failed. Not going to continue")
+            print("Buy verify failed.")
             write_new_value(BUY_SAVE, buy_flow.buy_order_no)
             return
 
         value = buy_flow.buy_confirm(user_id)
         print(value)
         if value == 'PROCESSING':
-            print("Retry status")
+            print("Checking buy status...")
             time.sleep(2)
             ans = buy_flow.buy_status(user_id)
             if ans == 'PROCESSING' or ans == 'FAILED':
                 print("Buy status retry failed")
                 write_new_value(BUY_SAVE, buy_flow.buy_order_no)
                 return
-            elif ans == 'COMPLETED':
-                print(">> Buy Complete")
 
         query = {'userId': user_id}
         mongo_manager.increment_amount_spent(query, amount)
@@ -66,21 +64,21 @@ def sell_transactions(number_of_transactions) -> None:
     for i in range(number_of_transactions):
         is_success = sell_flow.get_sell_price()
         if not is_success:
-            print("Sell verify failed. Not going to continue")
+            print("Sell Price failed.")
             return
 
         amount = get_random_sell_price()
         user_id = mongo_manager.get_sale_eligible_random_user(amount)
         is_verified = sell_flow.sell_verify(amount, user_id)
         if not is_verified:
-            print("Sell verify failed. Not going to continue")
+            print("Sell verify failed.")
             write_new_value(SELL_SAVE, sell_flow.sell_order_no)
             return
 
         value = sell_flow.sell_confirm(user_id)
         print(value)
         if value == 'PROCESSING':
-            print("Retry status")
+            print("Checking sell status...")
             time.sleep(2)
             ans = sell_flow.sell_status(user_id)
             if ans == 'PROCESSING' or ans == 'FAILED':
