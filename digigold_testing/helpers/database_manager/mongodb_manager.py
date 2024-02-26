@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from digigold_testing.config import *
+import random
 
 
 class MongoDBManager:
@@ -27,19 +28,38 @@ class MongoDBManager:
     def get_random_user(self):
         pipeline = [{"$sample": {"size": 1}}]
         result = list(self.collection.aggregate(pipeline))
-        return result[0]['id'] if result else self.collection.find_one()['id']
+        return result[0]['userId'] if result else self.collection.find_one()['userId']
 
-    def get_sale_eligible_random_user(self):
-        result = self.collection.find_one()
-        return result['id']
+    def get_sale_eligible_random_user(self, amount):
+        query = {"amount_spent": {"$gt": amount}}
+        result = list(self.collection.find(query))
+        if len(result) == 0:
+            return '-1'
+        rand = random.choice(result)
+        return rand.get("userId")
 
     def increment_amount_spent(self, query, amount_to_increment):
         update_data = {"$inc": {"amount_spent": amount_to_increment}}
         result = self.collection.update_one(query, update_data)
+        print('Incremented Amount: ' + str(result))
+
+    def increment_amount_withdrawn(self, query, amount_to_increment):
+        update_data = {"$inc": {"amount_withdrawn": amount_to_increment}}
+        result = self.collection.update_one(query, update_data)
+        print('Incremented Withdraw Amount: ' + str(result))
 
     def increment_gold_volume(self, query, volume_to_increment):
         update_data = {"$inc": {"balance_gold": volume_to_increment}}
         result = self.collection.update_one(query, update_data)
+        print('Incremented Volume: ' + str(result))
+
+    def decrement_gold_volume(self, query, volume_to_decrement):
+        if volume_to_decrement <= 0:
+            print("Not incrementing the gold volume")
+            return
+        update_data = {"$inc": {"balance_gold": -volume_to_decrement}}
+        result = self.collection.update_one(query, update_data)
+        print('Decrement Volume: ' + str(result))
 
     def close_connection(self):
         self.client.close()

@@ -1,6 +1,6 @@
 import json
 import requests
-from digigold_testing.helpers.random.calculation import round_down
+from digigold_testing.helpers.utils.calculation import round_down
 from digigold_testing.user_transaction_flow.dto import buy_dto
 from digigold_testing.config import *
 
@@ -75,6 +75,7 @@ class UserBuyFlow:
         tax_item = round((self.asset_price * 1.5)/100, 2)
         tax_on_rate = tax_item * 2
         total_price = round(self.asset_price + tax_on_rate, 2)
-        volume = round(buy_price/total_price, 4)
-        print(f"Volume for order id:{BUY_MERCHANT_ORDER_PREFIX}{self.buy_order_no} is {volume}")
+        vol = buy_price/total_price
+        volume = round_down(buy_price/total_price, 4)
+        print(f"Volume for order id: {BUY_MERCHANT_ORDER_PREFIX}{self.buy_order_no} is {volume} and amount is {buy_price}")
         return volume

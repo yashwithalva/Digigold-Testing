@@ -1,7 +1,7 @@
 import json
 import requests
 from digigold_testing.user.dto import user
-from digigold_testing.helpers.random import random
+from digigold_testing.helpers.utils import random_generator
 from digigold_testing.config import *
 from digigold_testing.helpers.database_manager import mongodb_manager
 
@@ -44,11 +44,19 @@ class UserGenerationFlow:
         Generates user at regular intervals
         """
         for i in range(0, self.total_user_count):
-            user_data = self.create_new_user(i+1)
-            user_data['balance_gold'] = 0
-            user_data['amount_spent'] = 0
-            user_data['amount_withdrawn'] = 0
+            res = self.create_new_user(i+1)
+            user_data = {
+                "name": res['name'],
+                "phoneNumber": res['phoneNumber'],
+                "countryCode": res['countryCode'],
+                "currentBalance": 0,
+                "balance_gold": 0,
+                "amount_spent": 0,
+                "amount_withdrawn": 0,
+                "userId": res['id']
+            }
             self.mongo_manager.insert_data(user_data)
+
         return True
 
     def generate_users_at_rate(self):

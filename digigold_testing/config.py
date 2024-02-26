@@ -31,3 +31,7 @@ SELL_VERIFY_URL = '/v1/api/materialsTransactions/sell/verify'
 SELL_CONFIRM_URL = '/v1/api/materialsTransactions/sell/confirm'
 SELL_STATUS_URL = '/v1/api/materialsTransactions/sell/status'
 
+
+# EXTRAS
+BUY_SAVE = 'digigold_testing/resource/extra_buy.txt'
+SELL_SAVE = 'digigold_testing/resource/extra_sell.txt'
