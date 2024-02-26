@@ -14,14 +14,14 @@ BUY_MERCHANT_ORDER_PREFIX = 'BUY-'
 SELL_MERCHANT_ORDER_PREFIX = 'SELL-'
 
 # BUY RANGE (Will be multiplied by 10)
-BUY_MIN_PRICE = 10
-BUY_MAX_PRICE = 11
+BUY_MIN_PRICE = 600
+BUY_MAX_PRICE = 800
 
 # SELL RANGE (Will be multiplied by 10)
-SELL_MIN_PRICE = 8
-SELL_MAX_PRICE = 10
+SELL_MIN_PRICE = 650
+SELL_MAX_PRICE = 800
 
-USER_ID = '65da01698774b42a91dad6f7'
+WAIT_TIME = 1
 
 ###############################################################
 

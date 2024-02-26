@@ -73,5 +73,5 @@ class UserSellFlow:
     def _get_volume_from_price(self, sell_price) -> int:
         total_price = round(self.asset_price, 2)
         volume = round_down(sell_price/total_price, 4)
-        print(f"Volume for order id: {SELL_MERCHANT_ORDER_PREFIX}{self.sell_order_no} is {volume}")
+        print(f"Volume for order id: {SELL_MERCHANT_ORDER_PREFIX}{self.sell_order_no} is {volume} for amount {sell_price}.")
         return volume

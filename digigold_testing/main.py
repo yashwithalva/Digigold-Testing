@@ -26,7 +26,7 @@ def buy_transactions(number_of_transactions) -> None:
             return
 
         amount = get_random_buy_price()
-        user_id = config.USER_ID
+        user_id = mongo_manager.get_random_user()
         is_verified = buy_flow.buy_verify(amount, user_id)
         if not is_verified:
             print("Buy verify failed.")
@@ -37,7 +37,7 @@ def buy_transactions(number_of_transactions) -> None:
         print(value)
         if value == 'PROCESSING':
             print("Checking buy status...")
-            time.sleep(2)
+            time.sleep(config.WAIT_TIME)
             ans = buy_flow.buy_status(user_id)
             if ans == 'PROCESSING' or ans == 'FAILED':
                 print("Buy status retry failed")
@@ -45,8 +45,8 @@ def buy_transactions(number_of_transactions) -> None:
                 return
 
         query = {'userId': user_id}
-        # mongo_manager.increment_amount_spent(query, amount)
-        # mongo_manager.increment_gold_volume(query, is_verified)
+        mongo_manager.increment_amount_spent(query, amount)
+        mongo_manager.increment_gold_volume(query, is_verified)
 
         write_new_value(BUY_SAVE, buy_flow.buy_order_no)
 
@@ -68,7 +68,7 @@ def sell_transactions(number_of_transactions) -> None:
             return
 
         amount = get_random_sell_price()
-        user_id = config.USER_ID
+        user_id = mongo_manager.get_sale_eligible_random_user(amount)
         is_verified = sell_flow.sell_verify(amount, user_id)
         if not is_verified:
             print("Sell verify failed.")
@@ -79,7 +79,7 @@ def sell_transactions(number_of_transactions) -> None:
         print(value)
         if value == 'PROCESSING':
             print("Checking sell status...")
-            time.sleep(2)
+            time.sleep(config.WAIT_TIME)
             ans = sell_flow.sell_status(user_id)
             if ans == 'PROCESSING' or ans == 'FAILED':
                 print("Sell status retry failed")
@@ -89,18 +89,11 @@ def sell_transactions(number_of_transactions) -> None:
                 print(">> Sell Complete")
 
         query = {'userId': user_id}
-        # mongo_manager.increment_amount_withdrawn(query, amount)
-        # mongo_manager.decrement_gold_volume(query, is_verified)
+        mongo_manager.increment_amount_withdrawn(query, amount)
+        mongo_manager.decrement_gold_volume(query, is_verified)
         print("success")
         write_new_value(SELL_SAVE, sell_flow.sell_order_no)
 
 
-def main():
-    mongo_manager = mongodb_manager.MongoDBManager(MONGO_DB_NAME, MONGO_USER_COLLECTION)
-    xyz = UserGenerationFlow(10, mongo_manager)
-    xyz.generate_fixed_user()
-
-
 if __name__ == '__main__':
-    buy_transactions(1)
-    sell_transactions(1)
+    sell_transactions(3)
