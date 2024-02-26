@@ -102,4 +102,5 @@ def main():
 
 
 if __name__ == '__main__':
-    sell_transactions(2)
+    buy_transactions(6)
+    sell_transactions(1)

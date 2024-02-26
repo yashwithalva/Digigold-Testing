@@ -1,5 +1,6 @@
 import uuid
 import random
+import digigold_testing.config as config
 
 
 def generate_token(n_size=5) -> str:
@@ -14,11 +15,11 @@ def generate_token(n_size=5) -> str:
     return value[0:n_size]
 
 
-def get_random_buy_price():
-    value = random.randint(1, 8)
+def get_random_buy_price(min_val=config.BUY_MIN_PRICE, max_val=config.BUY_MAX_PRICE) -> int:
+    value = random.randint(min_val, max_val)
     return value * 10
 
 
-def get_random_sell_price():
-    value = random.randint(8, 15)
+def get_random_sell_price(min_val=config.SELL_MIN_PRICE, max_val=config.SELL_MAX_PRICE) -> int:
+    value = random.randint(min_val, max_val)
     return value * 10

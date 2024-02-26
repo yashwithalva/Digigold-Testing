@@ -13,6 +13,14 @@ MATERIAL_CODE = 'SKU1001'
 BUY_MERCHANT_ORDER_PREFIX = 'BUY-'
 SELL_MERCHANT_ORDER_PREFIX = 'SELL-'
 
+# BUY RANGE (Will be multiplied by 10)
+BUY_MIN_PRICE = 1
+BUY_MAX_PRICE = 8
+
+# SELL RANGE (Will be multiplied by 10)
+SELL_MIN_PRICE = 8
+SELL_MAX_PRICE = 15
+
 # Mongo
 MONGO_CLIENT = 'mongodb://localhost:27017/'
 MONGO_DB_NAME = 'goldUsers'
@@ -30,7 +38,6 @@ SELL_PRICE_URL = '/v1/api/materialsTransactions/sell/price'
 SELL_VERIFY_URL = '/v1/api/materialsTransactions/sell/verify'
 SELL_CONFIRM_URL = '/v1/api/materialsTransactions/sell/confirm'
 SELL_STATUS_URL = '/v1/api/materialsTransactions/sell/status'
-
 
 # EXTRAS
 BUY_SAVE = 'digigold_testing/resource/extra_buy.txt'
