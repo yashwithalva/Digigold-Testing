@@ -1,7 +1,7 @@
 import time
 
 from config import MONGO_DB_NAME, MONGO_USER_COLLECTION, BUY_SAVE, SELL_SAVE
-from helpers.database_manager import mongodb_manager
+from helpers.database_manager import mongodb_manager, postgres_manager
 from helpers.utils.random_generator import *
 from helpers.utils.fileop import *
 from user.api_handler.user_creation import UserGenerationFlow
@@ -26,7 +26,7 @@ def buy_transactions(number_of_transactions) -> None:
             return
 
         amount = get_random_buy_price()
-        user_id = mongo_manager.get_random_user()
+        user_id = config.USER_ID
         is_verified = buy_flow.buy_verify(amount, user_id)
         if not is_verified:
             print("Buy verify failed.")
@@ -45,8 +45,8 @@ def buy_transactions(number_of_transactions) -> None:
                 return
 
         query = {'userId': user_id}
-        mongo_manager.increment_amount_spent(query, amount)
-        mongo_manager.increment_gold_volume(query, is_verified)
+        # mongo_manager.increment_amount_spent(query, amount)
+        # mongo_manager.increment_gold_volume(query, is_verified)
 
         write_new_value(BUY_SAVE, buy_flow.buy_order_no)
 
@@ -68,7 +68,7 @@ def sell_transactions(number_of_transactions) -> None:
             return
 
         amount = get_random_sell_price()
-        user_id = mongo_manager.get_sale_eligible_random_user(amount)
+        user_id = config.USER_ID
         is_verified = sell_flow.sell_verify(amount, user_id)
         if not is_verified:
             print("Sell verify failed.")
@@ -89,8 +89,8 @@ def sell_transactions(number_of_transactions) -> None:
                 print(">> Sell Complete")
 
         query = {'userId': user_id}
-        mongo_manager.increment_amount_withdrawn(query, amount)
-        mongo_manager.decrement_gold_volume(query, is_verified)
+        # mongo_manager.increment_amount_withdrawn(query, amount)
+        # mongo_manager.decrement_gold_volume(query, is_verified)
 
         write_new_value(SELL_SAVE, sell_flow.sell_order_no)
 
@@ -101,6 +101,13 @@ def main():
     xyz.generate_fixed_user()
 
 
+def calculate_taxed_price(amount):
+    tax = (amount * 1.5 / 100) * 2
+    print(amount + tax)
+
+
 if __name__ == '__main__':
-    buy_transactions(6)
-    sell_transactions(1)
+    # sell_transactions(5)
+    # psql = postgres_manager.PostgresSQLManager()
+    # res = psql.get_total_gold()[0]
+    calculate_taxed_price()

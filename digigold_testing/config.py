@@ -21,10 +21,21 @@ BUY_MAX_PRICE = 8
 SELL_MIN_PRICE = 8
 SELL_MAX_PRICE = 15
 
+USER_ID = ''
+
+###############################################################
+
 # Mongo
 MONGO_CLIENT = 'mongodb://localhost:27017/'
 MONGO_DB_NAME = 'goldUsers'
 MONGO_USER_COLLECTION = 'users'
+
+# POSTGRES
+PSQL_HOST = 'localhost'
+PSQL_PORT = 5432
+PSQL_DATABASE = 'digigold'
+PSQL_USER = 'postgres'
+PSQL_PASSWORD = 'root'
 
 # URL
 CREATE_USER_URL = '/v1/api/users/'
